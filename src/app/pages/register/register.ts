@@ -1,11 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { CreateUserModel } from '../../models/create-user.model';
-import { createMayBeForwardRefExpression } from '@angular/compiler';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
+import { CreateUserModel } from '../../models/create-user.model';
+import { AuthService } from '../../services/auth.service';
 
-
-export const passwordMatchValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+export const passwordMatchValidator: ValidatorFn = (
+  control: AbstractControl,
+): ValidationErrors | null => {
   const password = control.get('password');
   const confirmPassword = control.get('confirmPassword');
 
@@ -33,8 +42,13 @@ export class Register implements OnInit {
   createUserModel!: CreateUserModel;
   showPassword = false;
   showConfirmPassword = false;
+  isLoading = false;
 
-  constructor(private formBuilder: FormBuilder, private router: Router) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private authService: AuthService,
+  ) {}
 
   ngOnInit(): void {
     this.userForm = this.formBuilder.group(
@@ -44,7 +58,7 @@ export class Register implements OnInit {
         password: ['', [Validators.required, Validators.minLength(6)]],
         confirmPassword: ['', [Validators.required]],
       },
-      { validators: passwordMatchValidator }
+      { validators: passwordMatchValidator },
     );
   }
 
@@ -54,7 +68,6 @@ export class Register implements OnInit {
       return;
     }
 
-    
     const { userName, email, password } = this.userForm.value;
     this.createUserModel = {
       userName,
@@ -62,11 +75,15 @@ export class Register implements OnInit {
       password,
     };
 
-    console.log('Payload correto enviado:', this.createUserModel);
-
-    localStorage.setItem('token', this.createUserModel.userName);
-
-    this.router.navigate(['/']);
-
+    this.isLoading = true;
+    this.authService.register(this.createUserModel).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.router.navigate(['/']);
+      },
+      error: () => {
+        this.isLoading = false;
+      },
+    });
   }
 }
