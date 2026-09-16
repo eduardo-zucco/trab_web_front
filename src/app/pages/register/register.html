@@ -1,0 +1,160 @@
+
+<main class="bg-white md:h-screen">
+   <div class="grid md:grid-cols-2 items-center w-full h-full">
+      <div class="bg-gray-50 h-full max-md:order-1 p-4">
+         <img src="https://readymadeui.com/signin-image.webp"
+            class="lg:max-w-3/4 w-full h-full aspect-square object-contain block mx-auto" alt="imagem de cadastro" />
+      </div>
+
+      <div class="flex items-center px-4 py-12 w-full h-full md:px-8 lg:p-12">
+         <div class="max-w-md mx-auto w-full">
+            <div class="mb-10">
+               <h1 class="text-slate-900 text-2xl font-bold">
+                  Criar conta
+               </h1>
+            </div>
+
+            <form class="space-y-4 w-full" [formGroup]="userForm" (ngSubmit)="submitForm()">
+              
+               <div>
+                  <label for="userName"
+                     class="mb-1.5 text-slate-900 font-medium text-sm inline-block">
+                     Nome de usuário
+                  </label>
+                  <input type="text" id="userName" name="userName"
+                     placeholder="Ex: teste"
+                     formControlName="userName"
+                     [class.outline-red-500]="userForm.get('userName')?.invalid && userForm.get('userName')?.touched"
+                     class="px-3 py-2.5 text-sm text-slate-900 rounded-md bg-white w-full outline-1 -outline-offset-1 outline-slate-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600" />
+                  @if (userForm.get('userName')?.touched && userForm.get('userName')?.errors) {
+                     <p class="text-xs text-red-600 mt-1">
+                        @if (userForm.get('userName')?.hasError('required')) {
+                           O nome de usuário é obrigatório.
+                        } @else if (userForm.get('userName')?.hasError('minlength')) {
+                           O nome de usuário deve ter no mínimo 3 caracteres.
+                        }
+                     </p>
+                  }
+               </div>
+
+              
+               <div>
+                  <label for="email"
+                     class="mb-1.5 text-slate-900 font-medium text-sm inline-block">
+                     E-mail
+                  </label>
+                  <input type="email" id="email" name="email"
+                     placeholder="teste@exemplo.com"
+                     formControlName="email"
+                     [class.outline-red-500]="userForm.get('email')?.invalid && userForm.get('email')?.touched"
+                     class="px-3 py-2.5 text-sm text-slate-900 rounded-md bg-white w-full outline-1 -outline-offset-1 outline-slate-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600" />
+                  @if (userForm.get('email')?.touched && userForm.get('email')?.errors) {
+                     <p class="text-xs text-red-600 mt-1">
+                        @if (userForm.get('email')?.hasError('required')) {
+                           O e-mail é obrigatório.
+                        } @else if (userForm.get('email')?.hasError('email')) {
+                           Informe um e-mail válido.
+                        }
+                     </p>
+                  }
+               </div>
+
+              
+               <div>
+                  <label for="password"
+                     class="mb-1.5 text-slate-900 font-medium text-sm inline-block">
+                     Senha
+                  </label>
+                  <div class="relative">
+                     <input [type]="showPassword ? 'text' : 'password'" id="password" name="password"
+                        placeholder="••••••••"
+                        formControlName="password"
+                        [class.outline-red-500]="userForm.get('password')?.invalid && userForm.get('password')?.touched"
+                        class="px-3 py-2.5 pr-10 text-sm text-slate-900 rounded-md bg-white w-full outline-1 -outline-offset-1 outline-slate-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600" />
+                     <button
+                        type="button"
+                        (click)="showPassword = !showPassword"
+                        class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer p-1"
+                        [attr.aria-label]="showPassword ? 'Ocultar senha' : 'Ver senha'">
+                        @if (showPassword) {
+                           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
+                           </svg>
+                        } @else {
+                           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                           </svg>
+                        }
+                     </button>
+                  </div>
+                  @if (userForm.get('password')?.touched && userForm.get('password')?.errors) {
+                     <p class="text-xs text-red-600 mt-1">
+                        @if (userForm.get('password')?.hasError('required')) {
+                           A senha é obrigatória.
+                        } @else if (userForm.get('password')?.hasError('minlength')) {
+                           A senha deve ter no mínimo 6 caracteres.
+                        }
+                     </p>
+                  }
+               </div>
+
+              
+               <div>
+                  <label for="confirm-password"
+                     class="mb-1.5 text-slate-900 font-medium text-sm inline-block">
+                     Confirmar senha
+                  </label>
+                  <div class="relative">
+                     <input [type]="showConfirmPassword ? 'text' : 'password'" id="confirm-password" name="confirmPassword"
+                        placeholder="••••••••"
+                        formControlName="confirmPassword"
+                        [class.outline-red-500]="userForm.get('confirmPassword')?.invalid && userForm.get('confirmPassword')?.touched"
+                        class="px-3 py-2.5 pr-10 text-sm text-slate-900 rounded-md bg-white w-full outline-1 -outline-offset-1 outline-slate-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600" />
+                     <button
+                        type="button"
+                        (click)="showConfirmPassword = !showConfirmPassword"
+                        class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer p-1"
+                        [attr.aria-label]="showConfirmPassword ? 'Ocultar confirmação de senha' : 'Ver confirmação de senha'">
+                        @if (showConfirmPassword) {
+                           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
+                           </svg>
+                        } @else {
+                           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                           </svg>
+                        }
+                     </button>
+                  </div>
+                  @if (userForm.get('confirmPassword')?.touched && userForm.get('confirmPassword')?.errors) {
+                     <p class="text-xs text-red-600 mt-1">
+                        @if (userForm.get('confirmPassword')?.hasError('required')) {
+                           A confirmação de senha é obrigatória.
+                        } @else if (userForm.get('confirmPassword')?.hasError('passwordMismatch')) {
+                           As senhas não coincidem.
+                        }
+                     </p>
+                  }
+               </div>
+
+               <button type="submit"
+                  class="w-full py-2.5 px-3.5 text-sm rounded-md font-semibold cursor-pointer tracking-wide text-white border border-blue-600 bg-blue-600 hover:bg-blue-700 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+                  Criar conta
+               </button>
+            </form>
+
+            <div class="mt-6 text-slate-900 text-sm text-center">
+               Já possui uma conta?
+
+               <a href="/login"
+                  class="text-blue-700 hover:underline ml-1 font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded">
+                  Entrar aqui
+               </a>
+            </div>
+         </div>
+      </div>
+   </div>
+</main>
+
