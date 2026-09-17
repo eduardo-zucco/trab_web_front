@@ -35,8 +35,21 @@
                             Senha
                         </label>
 
-                        <input type="password" id="password" formControlName="password" placeholder="••••••••"
-                            class="px-3 py-2.5 text-sm text-slate-900 rounded-md bg-white w-full outline-1 -outline-offset-1 outline-slate-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600" />
+                        <div class="relative">
+                            <input [type]="showPassword ? 'text' : 'password'" id="password" formControlName="password" placeholder="••••••••"
+                                class="px-3 py-2.5 pr-10 text-sm text-slate-900 rounded-md bg-white w-full outline-1 -outline-offset-1 outline-slate-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600" />
+                            <button
+                                type="button"
+                                (click)="showPassword = !showPassword"
+                                class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer p-1"
+                                [attr.aria-label]="showPassword ? 'Ocultar senha' : 'Ver senha'">
+                                @if (showPassword) {
+                                    <i class="bi bi-eye-slash text-lg leading-none"></i>
+                                } @else {
+                                    <i class="bi bi-eye text-lg leading-none"></i>
+                                }
+                            </button>
+                        </div>
 
                         @if (userForm.get('password')?.touched && userForm.get('password')?.invalid) {
                         <p class="mt-1 text-sm text-red-600">
@@ -57,10 +70,7 @@
 
                             <span
                                 class="flex h-4 w-4 shrink-0 items-center justify-center rounded outline-1 outline-slate-300 bg-white group-has-[input:checked]:bg-blue-600 group-has-[input:checked]:outline-blue-600">
-                                <svg class="size-3 text-white opacity-0 group-has-[input:checked]:opacity-100"
-                                    viewBox="0 0 12 10" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M1 5l3 3 7-7" />
-                                </svg>
+                                <i class="bi bi-check-lg text-white opacity-0 group-has-[input:checked]:opacity-100 text-xs font-bold leading-none"></i>
                             </span>
 
                             <span class="ml-3 text-sm text-slate-700">
@@ -74,8 +84,13 @@
                     </div>
 
                     <button type="submit" [disabled]="isLoading"
-                        class="w-full py-2 px-3.5 text-sm rounded-md font-semibold cursor-pointer tracking-wide text-white border border-blue-600 bg-blue-600 hover:bg-blue-700 disabled:opacity-50">
-                        {{ isLoading ? 'Entrando...' : 'Entrar' }}
+                        class="w-full py-2 px-3.5 text-sm rounded-md font-semibold cursor-pointer tracking-wide text-white border border-blue-600 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 flex items-center justify-center gap-2">
+                        @if (isLoading) {
+                            <i class="bi bi-arrow-repeat animate-spin text-base leading-none"></i>
+                            <span>Entrando...</span>
+                        } @else {
+                            <span>Entrar</span>
+                        }
                     </button>
 
                     <div class="text-slate-900 text-sm text-center">

@@ -5,13 +5,16 @@ import { environment } from '../../environments/environment.development';
 import { ApiResponse } from '../models/api-response.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApiService {
   private readonly http = inject(HttpClient);
   protected readonly baseUrl = environment.apiUrl;
 
-  get<T>(endpoint: string, params?: Record<string, string | number | boolean | undefined | null>): Observable<ApiResponse<T>> {
+  get<T>(
+    endpoint: string,
+    params?: Record<string, string | number | boolean | undefined | null>,
+  ): Observable<ApiResponse<T>> {
     let httpParams = new HttpParams();
     if (params) {
       Object.entries(params).forEach(([key, value]) => {
@@ -20,7 +23,9 @@ export class ApiService {
         }
       });
     }
-    return this.http.get<ApiResponse<T>>(`${this.baseUrl}/${endpoint}`, { params: httpParams });
+    return this.http.get<ApiResponse<T>>(`${this.baseUrl}/${endpoint}`, {
+      params: httpParams,
+    });
   }
 
   getById<T>(endpoint: string, id: string | number): Observable<ApiResponse<T>> {
@@ -35,7 +40,11 @@ export class ApiService {
     return this.http.put<ApiResponse<T>>(`${this.baseUrl}/${endpoint}/${id}`, body);
   }
 
-  patch<T, B = unknown>(endpoint: string, id: string | number, body: Partial<B>): Observable<ApiResponse<T>> {
+  patch<T, B = unknown>(
+    endpoint: string,
+    id: string | number,
+    body: Partial<B>,
+  ): Observable<ApiResponse<T>> {
     return this.http.patch<ApiResponse<T>>(`${this.baseUrl}/${endpoint}/${id}`, body);
   }
 

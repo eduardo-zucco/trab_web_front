@@ -30,24 +30,24 @@ export class AuthService {
         error: (error) => {
           this.toastService.handleError(error, 'Erro ao criar conta. Tente novamente.');
         },
-      })
+      }),
     );
   }
 
-  login(credentials: LoginModel, remember?: boolean): Observable<ApiResponse<UserResponse>>{
+  login(credentials: LoginModel, remember?: boolean): Observable<ApiResponse<UserResponse>> {
     return this.apiService.post<UserResponse>('login', credentials).pipe(
       tap({
-        next: (response) =>  {
+        next: (response) => {
           if (response.data?.token) {
             this.token = response.data.token;
             this.saveToken(this.token, remember);
           }
-          this.toastService.success(response.message || 'Logado com sucesso!')
+          this.toastService.success(response.message || 'Logado com sucesso!');
         },
-        error: (error) =>{
-          this.toastService.handleError(error, "Erro ao logar. Tente novamente.");
-        } 
-      })
+        error: (error) => {
+          this.toastService.handleError(error, 'Erro ao logar. Tente novamente.');
+        },
+      }),
     );
   }
 
@@ -55,11 +55,15 @@ export class AuthService {
     if (remember) {
       localStorage.setItem('token', token);
     }
-    sessionStorage.setItem('token', token)
+    sessionStorage.setItem('token', token);
   }
 
   getToken(): string | null {
-    return localStorage.getItem('token');
+    let token = localStorage.getItem('token') || sessionStorage.getItem('token');
+    if (token) {
+      this.token = token;
+    }
+    return this.token;
   }
 
   isLoggedIn(): boolean {
@@ -71,6 +75,6 @@ export class AuthService {
     sessionStorage.removeItem('token');
     this.token = null;
     this.toastService.info('Sessão encerrada.');
-    window.location.reload()
+    window.location.reload();
   }
 }
