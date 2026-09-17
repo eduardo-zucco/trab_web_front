@@ -11,10 +11,10 @@ export class AuthGuard {
   ) { }
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
     
     if (!token) {
-      this.router.navigate(['/register']);
+      this.router.navigate(['/login']);
     }
 
     return !!token;

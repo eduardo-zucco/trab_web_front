@@ -5,6 +5,8 @@ import { ToastService } from './toast.service';
 import { CreateUserModel } from '../models/create-user.model';
 import { UserResponse } from '../models/user-response.model';
 import { ApiResponse } from '../models/api-response.model';
+import { LoginModel } from '../models/login.model';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +14,7 @@ import { ApiResponse } from '../models/api-response.model';
 export class AuthService {
   private readonly apiService = inject(ApiService);
   private readonly toastService = inject(ToastService);
+  private readonly router = inject(Router);
   token: string | null = null;
 
   register(user: CreateUserModel): Observable<ApiResponse<UserResponse>> {
@@ -27,6 +30,23 @@ export class AuthService {
         error: (error) => {
           this.toastService.handleError(error, 'Erro ao criar conta. Tente novamente.');
         },
+      })
+    );
+  }
+
+  login(credentials: LoginModel, remember?: boolean): Observable<ApiResponse<UserResponse>>{
+    return this.apiService.post<UserResponse>('login', credentials).pipe(
+      tap({
+        next: (response) =>  {
+          if (response.data?.token) {
+            this.token = response.data.token;
+            this.saveToken(this.token, remember);
+          }
+          this.toastService.success(response.message || 'Logado com sucesso!')
+        },
+        error: (error) =>{
+          this.toastService.handleError(error, "Erro ao logar. Tente novamente.");
+        } 
       })
     );
   }
@@ -48,7 +68,9 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
     this.token = null;
     this.toastService.info('Sessão encerrada.');
+    window.location.reload()
   }
 }

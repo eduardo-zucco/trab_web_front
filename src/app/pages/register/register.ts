@@ -40,9 +40,9 @@ export const passwordMatchValidator: ValidatorFn = (
 export class Register implements OnInit {
   userForm!: FormGroup;
   createUserModel!: CreateUserModel;
-  showPassword = false;
-  showConfirmPassword = false;
-  isLoading = false;
+    showPassword = false;
+    showConfirmPassword = false;
+    isLoading = false;
 
   constructor(
     private formBuilder: FormBuilder,
