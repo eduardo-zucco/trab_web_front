@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { Toast } from './components/toast/toast';
 import { filter } from 'rxjs';
-
 
 @Component({
   selector: 'app-root',
@@ -13,10 +12,10 @@ import { filter } from 'rxjs';
   styleUrl: './app.css'
 })
 export class App implements OnInit {
+  private readonly router = inject(Router);
+
   title = 'trab_web_front';
   rotaAtual: string = '';
-
-  constructor(private router: Router) {}
 
   ngOnInit() {
     this.rotaAtual = this.router.url;

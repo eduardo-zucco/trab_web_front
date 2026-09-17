@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
+import { AppHttpError } from '../interceptors/error.interceptor';
 
 export type ToastType = 'success' | 'warning' | 'error' | 'info';
 
@@ -55,11 +56,16 @@ export class ToastService {
     this.toastsSignal.set([]);
   }
 
-  
   handleError(error: unknown, fallbackMessage = 'Ocorreu um erro inesperado'): void {
     let message = fallbackMessage;
 
-    if (error instanceof HttpErrorResponse) {
+    if (error instanceof AppHttpError) {
+      if (Array.isArray(error.errors) && error.errors.length > 0) {
+        message = error.errors.join(' | ');
+      } else if (error.message) {
+        message = error.message;
+      }
+    } else if (error instanceof HttpErrorResponse) {
       if (error.status === 0) {
         message = 'Não foi possível conectar ao servidor. Verifique se a API está online.';
       } else if (error.error) {

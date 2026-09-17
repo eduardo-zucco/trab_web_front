@@ -1,4 +1,4 @@
-import { booleanAttribute, Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LoginModel } from '../../models/login.model';
 import { Router } from '@angular/router';
@@ -10,29 +10,23 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './login.css',
   templateUrl: './login.html',
 })
-export class Login {
+export class Login implements OnInit {
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly router = inject(Router);
+  private readonly authService = inject(AuthService);
+
   userForm!: FormGroup;
   loginModel!: LoginModel;
 
   showPassword = false;
-  showConfirmPassword = false;
   isLoading = false;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private router: Router,
-    private authService: AuthService,
-  ) {}
-
-
   ngOnInit(): void {
-    this.userForm = this.formBuilder.group(
-      {
-        email: ['', [Validators.required, Validators.email]],
-        password: ['', [Validators.required, Validators.minLength(6)]],
-        remember: [true]
-      },
-    );
+    this.userForm = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      remember: [true],
+    });
   }
 
   submitForm(): void {
@@ -41,14 +35,12 @@ export class Login {
       return;
     }
 
-    const { email, password, remember} = this.userForm.value;
-
-    
+    const { email, password, remember } = this.userForm.value;
 
     this.loginModel = {
       email,
-      password
-    }
+      password,
+    };
 
     this.isLoading = true;
     this.authService.login(this.loginModel, remember).subscribe({
@@ -60,7 +52,5 @@ export class Login {
         this.isLoading = false;
       },
     });
-
   }
-
 }

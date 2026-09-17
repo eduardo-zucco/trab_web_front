@@ -54,15 +54,15 @@ export class AuthService {
   saveToken(token: string, remember?: boolean): void {
     if (remember) {
       localStorage.setItem('token', token);
+    } else {
+      localStorage.removeItem('token');
     }
     sessionStorage.setItem('token', token);
   }
 
   getToken(): string | null {
-    let token = localStorage.getItem('token') || sessionStorage.getItem('token');
-    if (token) {
-      this.token = token;
-    }
+    const token = sessionStorage.getItem('token') || localStorage.getItem('token');
+    this.token = token;
     return this.token;
   }
 
@@ -75,6 +75,6 @@ export class AuthService {
     sessionStorage.removeItem('token');
     this.token = null;
     this.toastService.info('Sessão encerrada.');
-    window.location.reload();
+    this.router.navigate(['/login']);
   }
 }

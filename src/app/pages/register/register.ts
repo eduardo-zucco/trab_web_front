@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -8,7 +8,7 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CreateUserModel } from '../../models/create-user.model';
 import { AuthService } from '../../services/auth.service';
 
@@ -33,22 +33,20 @@ export const passwordMatchValidator: ValidatorFn = (
 
 @Component({
   selector: 'app-register',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   styleUrl: './register.css',
   templateUrl: './register.html',
 })
 export class Register implements OnInit {
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly router = inject(Router);
+  private readonly authService = inject(AuthService);
+
   userForm!: FormGroup;
   createUserModel!: CreateUserModel;
-    showPassword = false;
-    showConfirmPassword = false;
-    isLoading = false;
-
-  constructor(
-    private formBuilder: FormBuilder,
-    private router: Router,
-    private authService: AuthService,
-  ) {}
+  showPassword = false;
+  showConfirmPassword = false;
+  isLoading = false;
 
   ngOnInit(): void {
     this.userForm = this.formBuilder.group(

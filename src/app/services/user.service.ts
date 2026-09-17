@@ -1,7 +1,5 @@
 import { inject, Injectable } from '@angular/core';
 import { ApiService } from './api.service';
-import { ToastService } from './toast.service';
-import { UserResponse } from '../models/user-response.model';
 import { ApiResponse } from '../models/api-response.model';
 import { Observable } from 'rxjs';
 import { UserGetModel } from '../models/user-get.model';
@@ -11,7 +9,6 @@ import { UserGetModel } from '../models/user-get.model';
 })
 export class UserService {
   private readonly apiService = inject(ApiService);
-  private readonly toastService = inject(ToastService);
 
   public findAll(): Observable<ApiResponse<UserGetModel[]>> {
     return this.apiService.get<UserGetModel[]>('users');

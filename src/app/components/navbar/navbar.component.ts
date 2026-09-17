@@ -8,13 +8,13 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './navbar.component.html'
 })
 export class NavbarComponent {
-  navLinks = [
+  private readonly authService = inject(AuthService);
+
+  readonly navLinks = [
     { label: 'Início', path: '/' },
   ];
 
-  private authService = inject(AuthService)
-
-  logout(){
-    this.authService.logout()
+  logout(): void {
+    this.authService.logout();
   }
 }
