@@ -55,9 +55,7 @@ export class ToastService {
     this.toastsSignal.set([]);
   }
 
-  /**
-   * Converte erros de requisições HTTP (ou genéricos) em mensagens amigáveis ao usuário
-   */
+  
   handleError(error: unknown, fallbackMessage = 'Ocorreu um erro inesperado'): void {
     let message = fallbackMessage;
 

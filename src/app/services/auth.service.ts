@@ -31,8 +31,11 @@ export class AuthService {
     );
   }
 
-  saveToken(token: string): void {
-    localStorage.setItem('token', token);
+  saveToken(token: string, remember?: boolean): void {
+    if (remember) {
+      localStorage.setItem('token', token);
+    }
+    sessionStorage.setItem('token', token)
   }
 
   getToken(): string | null {
