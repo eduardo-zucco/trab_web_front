@@ -9,7 +9,7 @@ import { ApiResponse } from '../models/api-response.model';
 })
 export class ApiService {
   private readonly http = inject(HttpClient);
-  protected readonly baseUrl = environment.apiUrl;
+  protected readonly baseUrl = `${environment.apiUrl}`;
 
   get<T>(
     endpoint: string,

@@ -4,18 +4,10 @@
       <div>
         <div class="flex items-center gap-3">
           <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Usuários</h1>
-          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200/60">
-            {{ users.length }} {{ users.length === 1 ? 'cadastrado' : 'cadastrados' }}
-          </span>
           @if (isMockMode) {
             <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-50 text-amber-700 border border-amber-200" title="Dados carregados localmente para testes">
               <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
               Modo Mock
-            </span>
-          } @else {
-            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-              API Online
             </span>
           }
         </div>
@@ -218,10 +210,7 @@
         <div>
           Exibindo <span class="font-semibold text-slate-700">{{ filteredUsers.length }}</span> de <span class="font-semibold text-slate-700">{{ users.length }}</span> {{ users.length === 1 ? 'usuário' : 'usuários' }}
         </div>
-        <div class="flex items-center gap-1.5">
-          <i class="bi bi-shield-check text-slate-400"></i>
-          <span>Modelo de dados: UserGetModel</span>
-        </div>
+       
       </div>
     }
   </div>
@@ -231,9 +220,7 @@
   <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs transition-opacity animate-fade-in">
     <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 transform transition-all">
       <div class="flex items-start gap-4">
-        <div class="w-11 h-11 rounded-xl bg-red-100 text-red-600 flex items-center justify-center shrink-0">
-          <i class="bi bi-exclamation-triangle text-xl"></i>
-        </div>
+        
         <div class="flex-1">
           <h3 class="text-lg font-bold text-slate-900">Confirmar exclusão</h3>
           <p class="text-sm text-slate-600 mt-1.5 leading-relaxed">

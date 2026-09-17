@@ -1,10 +1,11 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { ToastService } from '../../services/toast.service';
 import { UserGetModel } from '../../models/user-get.model';
 import { MOCK_USERS } from '../../mocks/user.mock';
+import { catchError, of } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -15,6 +16,7 @@ import { MOCK_USERS } from '../../mocks/user.mock';
 export class HomeComponent implements OnInit {
   private readonly userService = inject(UserService);
   private readonly toastService = inject(ToastService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   public users: UserGetModel[] = [];
   public isLoading: boolean = false;
@@ -22,6 +24,7 @@ export class HomeComponent implements OnInit {
   public isMockMode: boolean = false;
   public userToDelete: UserGetModel | null = null;
   public isDeleting: boolean = false;
+  public errorMessage: string = '';
 
   public get filteredUsers(): UserGetModel[] {
     const term = this.searchTerm.trim().toLowerCase();
@@ -42,23 +45,29 @@ export class HomeComponent implements OnInit {
 
   public findAll(): void {
     this.isLoading = true;
-    this.userService.findAll().subscribe({
-      next: (response) => {
-        if (response?.data && Array.isArray(response.data) && response.data.length > 0) {
-          this.users = response.data;
-          this.isMockMode = false;
-        } else {
-          this.users = [...MOCK_USERS];
-          this.isMockMode = true;
-        }
-        this.isLoading = false;
-      },
-      error: () => {
+    this.errorMessage = '';
+
+    this.userService.findAll().pipe(
+      catchError(() => {
         this.users = [...MOCK_USERS];
         this.isMockMode = true;
         this.isLoading = false;
         this.toastService.info('API indisponível: carregando dados mockados para testes.');
-      },
+        this.cdr.markForCheck();
+        return of(null);
+      })
+    ).subscribe((response) => {
+      if (response === null) return;
+
+      if (response?.data && Array.isArray(response.data) && response.data.length > 0) {
+        this.users = response.data;
+        this.isMockMode = false;
+      } else {
+        this.users = [...MOCK_USERS];
+        this.isMockMode = true;
+      }
+      this.isLoading = false;
+      this.cdr.markForCheck();
     });
   }
 
@@ -77,19 +86,23 @@ export class HomeComponent implements OnInit {
     const user = this.userToDelete;
 
     this.isDeleting = true;
-    this.userService.delete(user.id).subscribe({
-      next: () => {
-        this.users = this.users.filter((u) => u.id !== user.id);
-        this.toastService.success(`Usuário "${user.name}" excluído com sucesso!`);
-        this.isDeleting = false;
-        this.closeDeleteModal();
-      },
-      error: () => {
+    this.userService.delete(user.id).pipe(
+      catchError(() => {
         this.users = this.users.filter((u) => u.id !== user.id);
         this.toastService.success(`Usuário "${user.name}" excluído com sucesso! (Modo Mock)`);
         this.isDeleting = false;
-        this.closeDeleteModal();
-      },
+        this.userToDelete = null;
+        this.cdr.markForCheck();
+        return of(null);
+      })
+    ).subscribe((response) => {
+      if (response === null) return;
+
+      this.users = this.users.filter((u) => u.id !== user.id);
+      this.toastService.success(`Usuário "${user.name}" excluído com sucesso!`);
+      this.isDeleting = false;
+      this.userToDelete = null;
+      this.cdr.markForCheck();
     });
   }
 
@@ -97,6 +110,7 @@ export class HomeComponent implements OnInit {
     this.users = [...MOCK_USERS];
     this.isMockMode = true;
     this.toastService.info('Dados mockados restaurados.');
+    this.cdr.markForCheck();
   }
 
   public getInitials(name: string): string {

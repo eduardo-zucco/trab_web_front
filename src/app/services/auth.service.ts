@@ -18,7 +18,7 @@ export class AuthService {
   token: string | null = null;
 
   register(user: CreateUserModel): Observable<ApiResponse<UserResponse>> {
-    return this.apiService.post<UserResponse>('register', user).pipe(
+    return this.apiService.post<UserResponse>('users/register', user).pipe(
       tap({
         next: (response) => {
           if (response.data?.token) {
@@ -35,7 +35,7 @@ export class AuthService {
   }
 
   login(credentials: LoginModel, remember?: boolean): Observable<ApiResponse<UserResponse>> {
-    return this.apiService.post<UserResponse>('login', credentials).pipe(
+    return this.apiService.post<UserResponse>('users/login', credentials).pipe(
       tap({
         next: (response) => {
           if (response.data?.token) {
