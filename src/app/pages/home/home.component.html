@@ -5,58 +5,44 @@
         <div class="flex items-center gap-3">
           <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Usuários</h1>
           @if (isMockMode) {
-            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-50 text-amber-700 border border-amber-200" title="Dados carregados localmente para testes">
-              <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
-              Modo Mock
-            </span>
+          <span
+            class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-50 text-amber-700 border border-amber-200"
+            title="Dados carregados localmente para testes">
+            <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+            Modo Mock
+          </span>
           }
-        </div>
-        <p class="text-sm text-slate-500 mt-1">Gerencie a lista de usuários registrados no sistema.</p>
       </div>
 
       <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
         <div class="relative min-w-[240px] sm:w-72">
           <i class="bi bi-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-          <input
-            type="text"
-            [(ngModel)]="searchTerm"
-            placeholder="Buscar por nome, email ou ID..."
-            class="w-full pl-9 pr-9 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all placeholder:text-slate-400"
-          />
+          <input type="text" [(ngModel)]="searchTerm" placeholder="Buscar por nome, email ou ID..."
+            class="w-full pl-9 pr-9 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all placeholder:text-slate-400" />
           @if (searchTerm) {
-            <button
-              type="button"
-              (click)="searchTerm = ''"
-              class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
-              title="Limpar busca"
-            >
-              <i class="bi bi-x-circle-fill text-sm"></i>
-            </button>
+          <button type="button" (click)="searchTerm = ''"
+            class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+            title="Limpar busca">
+            <i class="bi bi-x-circle-fill text-sm"></i>
+          </button>
           }
         </div>
 
         <div class="flex items-center gap-2">
-          <button
-            type="button"
-            (click)="findAll()"
-            [disabled]="isLoading"
+          <button type="button" (click)="findAll()" [disabled]="isLoading"
             class="inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 disabled:opacity-50 transition-all shadow-xs cursor-pointer"
-            title="Atualizar lista"
-          >
+            title="Atualizar lista">
             <i class="bi bi-arrow-clockwise text-base" [class.animate-spin]="isLoading"></i>
             <span class="hidden sm:inline">Recarregar</span>
           </button>
 
           @if (isMockMode) {
-            <button
-              type="button"
-              (click)="resetMockData()"
-              class="inline-flex items-center justify-center gap-2 px-3.5 py-2 text-sm font-medium text-amber-700 bg-amber-50/80 border border-amber-200 rounded-xl hover:bg-amber-100/70 transition-all shadow-xs cursor-pointer"
-              title="Restaurar dados mockados originais"
-            >
-              <i class="bi bi-arrow-counterclockwise text-sm"></i>
-              <span class="hidden sm:inline">Restaurar Mock</span>
-            </button>
+          <button type="button" (click)="resetMockData()"
+            class="inline-flex items-center justify-center gap-2 px-3.5 py-2 text-sm font-medium text-amber-700 bg-amber-50/80 border border-amber-200 rounded-xl hover:bg-amber-100/70 transition-all shadow-xs cursor-pointer"
+            title="Restaurar dados mockados originais">
+            <i class="bi bi-arrow-counterclockwise text-sm"></i>
+            <span class="hidden sm:inline">Restaurar Mock</span>
+          </button>
           }
         </div>
       </div>
@@ -68,7 +54,8 @@
       <table class="min-w-full divide-y divide-slate-200">
         <thead class="bg-slate-50/75">
           <tr>
-            <th scope="col" class="px-6 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider w-24">
+            <th scope="col"
+              class="px-6 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider w-24">
               ID
             </th>
             <th scope="col" class="px-6 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
@@ -77,185 +64,235 @@
             <th scope="col" class="px-6 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
               E-mail
             </th>
-            <th scope="col" class="px-6 py-3.5 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider w-32">
+            <th scope="col"
+              class="px-6 py-3.5 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider w-32">
               Ações
             </th>
           </tr>
         </thead>
         <tbody class="divide-y divide-slate-100 bg-white">
           @if (isLoading) {
-            @for (i of [1, 2, 3, 4]; track i) {
-              <tr class="animate-pulse">
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="h-6 w-12 bg-slate-200 rounded-md"></div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-slate-200 rounded-full"></div>
-                    <div class="space-y-1.5">
-                      <div class="h-4 w-32 bg-slate-200 rounded"></div>
-                      <div class="h-3 w-20 bg-slate-100 rounded"></div>
-                    </div>
-                  </div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="h-4 w-44 bg-slate-200 rounded"></div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-right">
-                  <div class="h-8 w-20 bg-slate-200 rounded-lg ml-auto"></div>
-                </td>
-              </tr>
-            }
+          @for (i of [1, 2, 3, 4]; track i) {
+          <tr class="animate-pulse">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="h-6 w-12 bg-slate-200 rounded-md"></div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-slate-200 rounded-full"></div>
+                <div class="space-y-1.5">
+                  <div class="h-4 w-32 bg-slate-200 rounded"></div>
+                  <div class="h-3 w-20 bg-slate-100 rounded"></div>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="h-4 w-44 bg-slate-200 rounded"></div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-right">
+              <div class="h-8 w-20 bg-slate-200 rounded-lg ml-auto"></div>
+            </td>
+          </tr>
+          }
           } @else if (filteredUsers.length > 0) {
-            @for (user of filteredUsers; track user.id) {
-              <tr class="hover:bg-slate-50/70 transition-colors group">
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-mono font-medium bg-slate-100 text-slate-600 border border-slate-200/70">
-                    #{{ user.id }}
-                  </span>
-                </td>
+          @for (user of filteredUsers; track user.id) {
+          <tr class="hover:bg-slate-50/70 transition-colors group">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span
+                class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-mono font-medium bg-slate-100 text-slate-600 border border-slate-200/70">
+                #{{ user.id }}
+              </span>
+            </td>
 
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="flex items-center gap-3">
-                    <div
-                      class="w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm shadow-xs select-none shrink-0 {{ getAvatarBgColor(user.id) }}"
-                    >
-                      {{ getInitials(user.name) }}
-                    </div>
-                    <div>
-                      <div class="text-sm font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors">
-                        {{ user.name }}
-                      </div>
-                      <div class="text-xs text-slate-400">
-                        Usuário cadastrado
-                      </div>
-                    </div>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm shadow-xs select-none shrink-0 {{ getAvatarBgColor(user.id) }}">
+                  {{ getInitials(user.name) }}
+                </div>
+                <div>
+                  <div class="text-sm font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors">
+                    {{ user.name }}
                   </div>
-                </td>
-
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="flex items-center gap-2 text-sm text-slate-600">
-                    <i class="bi bi-envelope text-slate-400 text-xs"></i>
-                    <a [href]="'mailto:' + user.email" class="hover:text-indigo-600 hover:underline transition-colors">
-                      {{ user.email }}
-                    </a>
+                  <div class="text-xs text-slate-400">
+                    Usuário cadastrado
                   </div>
-                </td>
+                </div>
+              </div>
+            </td>
 
-                <td class="px-6 py-4 whitespace-nowrap text-right">
-                  <button
-                    type="button"
-                    (click)="openDeleteModal(user)"
-                    class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-red-600 hover:text-red-700 bg-red-50/60 hover:bg-red-100/80 border border-red-200/60 hover:border-red-300 rounded-lg transition-all cursor-pointer shadow-2xs"
-                    title="Excluir usuário"
-                  >
-                    <i class="bi bi-trash3 text-xs"></i>
-                    <span>Excluir</span>
-                  </button>
-                </td>
-              </tr>
-            }
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center gap-2 text-sm text-slate-600">
+                <i class="bi bi-envelope text-slate-400 text-xs"></i>
+                <a [href]="'mailto:' + user.email" class="hover:text-indigo-600 hover:underline transition-colors">
+                  {{ user.email }}
+                </a>
+              </div>
+            </td>
+
+            <td class="px-6 py-4 whitespace-nowrap text-right">
+              <div class="flex items-center justify-end gap-2">
+                <button type="button" (click)="openEditModal(user)"
+                  class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-indigo-600 hover:text-indigo-700 bg-indigo-50/60 hover:bg-indigo-100/80 border border-indigo-200/60 hover:border-indigo-300 rounded-lg transition-all cursor-pointer shadow-2xs"
+                  title="Editar usuário">
+                  <i class="bi bi-pencil text-xs"></i>
+                  <span>Editar</span>
+                </button>
+                <button type="button" (click)="openDeleteModal(user)"
+                  class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-red-600 hover:text-red-700 bg-red-50/60 hover:bg-red-100/80 border border-red-200/60 hover:border-red-300 rounded-lg transition-all cursor-pointer shadow-2xs"
+                  title="Excluir usuário">
+                  <i class="bi bi-trash3 text-xs"></i>
+                  <span>Excluir</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+          }
           } @else {
-            <tr>
-              <td colspan="4" class="px-6 py-14 text-center">
-                <div class="max-w-sm mx-auto flex flex-col items-center">
-                  <div class="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-400 mb-4 shadow-2xs">
-                    @if (searchTerm) {
-                      <i class="bi bi-search text-2xl"></i>
-                    } @else {
-                      <i class="bi bi-people text-2xl"></i>
-                    }
-                  </div>
-                  <h3 class="text-base font-semibold text-slate-900 mb-1">
-                    @if (searchTerm) {
-                      Nenhum resultado encontrado
-                    } @else {
-                      Nenhum usuário cadastrado
-                    }
-                  </h3>
-                  <p class="text-sm text-slate-500 mb-5 text-center">
-                    @if (searchTerm) {
-                      Não encontramos nenhum usuário correspondente ao termo "{{ searchTerm }}".
-                    } @else {
-                      Não há usuários disponíveis no momento. Você pode recarregar ou restaurar os dados de teste.
-                    }
-                  </p>
+          <tr>
+            <td colspan="4" class="px-6 py-14 text-center">
+              <div class="max-w-sm mx-auto flex flex-col items-center">
+                <div
+                  class="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-400 mb-4 shadow-2xs">
                   @if (searchTerm) {
-                    <button
-                      type="button"
-                      (click)="searchTerm = ''"
-                      class="px-4 py-2 text-sm font-medium text-indigo-600 bg-indigo-50 hover:bg-indigo-100/80 rounded-xl transition cursor-pointer"
-                    >
-                      Limpar filtro de busca
-                    </button>
+                  <i class="bi bi-search text-2xl"></i>
                   } @else {
-                    <button
-                      type="button"
-                      (click)="resetMockData()"
-                      class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition shadow-xs cursor-pointer"
-                    >
-                      Carregar dados de exemplo (Mock)
-                    </button>
+                  <i class="bi bi-people text-2xl"></i>
                   }
                 </div>
-              </td>
-            </tr>
+                <h3 class="text-base font-semibold text-slate-900 mb-1">
+                  @if (searchTerm) {
+                  Nenhum resultado encontrado
+                  } @else {
+                  Nenhum usuário cadastrado
+                  }
+                </h3>
+                <p class="text-sm text-slate-500 mb-5 text-center">
+                  @if (searchTerm) {
+                  Não encontramos nenhum usuário correspondente ao termo "{{ searchTerm }}".
+                  } @else {
+                  Não há usuários disponíveis no momento. Você pode recarregar ou restaurar os dados de teste.
+                  }
+                </p>
+                @if (searchTerm) {
+                <button type="button" (click)="searchTerm = ''"
+                  class="px-4 py-2 text-sm font-medium text-indigo-600 bg-indigo-50 hover:bg-indigo-100/80 rounded-xl transition cursor-pointer">
+                  Limpar filtro de busca
+                </button>
+                } @else {
+                <button type="button" (click)="resetMockData()"
+                  class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition shadow-xs cursor-pointer">
+                  Carregar dados de exemplo (Mock)
+                </button>
+                }
+              </div>
+            </td>
+          </tr>
           }
         </tbody>
       </table>
     </div>
 
     @if (!isLoading && filteredUsers.length > 0) {
-      <div class="px-6 py-3.5 bg-slate-50/60 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-        <div>
-          Exibindo <span class="font-semibold text-slate-700">{{ filteredUsers.length }}</span> de <span class="font-semibold text-slate-700">{{ users.length }}</span> {{ users.length === 1 ? 'usuário' : 'usuários' }}
-        </div>
-       
+    <div
+      class="px-6 py-3.5 bg-slate-50/60 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+      <div>
+        Exibindo <span class="font-semibold text-slate-700">{{ filteredUsers.length }}</span> de <span
+          class="font-semibold text-slate-700">{{ users.length }}</span> {{ users.length === 1 ? 'usuário' : 'usuários'
+        }}
       </div>
+
+    </div>
     }
   </div>
 </div>
 
 @if (userToDelete; as target) {
-  <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs transition-opacity animate-fade-in">
-    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 transform transition-all">
-      <div class="flex items-start gap-4">
-        
-        <div class="flex-1">
-          <h3 class="text-lg font-bold text-slate-900">Confirmar exclusão</h3>
-          <p class="text-sm text-slate-600 mt-1.5 leading-relaxed">
-            Tem certeza de que deseja remover o usuário <strong class="text-slate-900 font-semibold">{{ target.name }}</strong> (ID: #{{ target.id }})?
-          </p>
-          <div class="mt-2 text-xs text-slate-500 bg-slate-50 p-2.5 rounded-lg border border-slate-100">
-            <span class="font-medium text-slate-700">E-mail:</span> {{ target.email }}
-          </div>
+<div
+  class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs transition-opacity animate-fade-in">
+  <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 transform transition-all">
+    <div class="flex items-start gap-4">
+
+      <div class="flex-1">
+        <h3 class="text-lg font-bold text-slate-900">Confirmar exclusão</h3>
+        <p class="text-sm text-slate-600 mt-1.5 leading-relaxed">
+          Tem certeza de que deseja remover o usuário <strong class="text-slate-900 font-semibold">{{ target.name
+            }}</strong> (ID: #{{ target.id }})?
+        </p>
+        <div class="mt-2 text-xs text-slate-500 bg-slate-50 p-2.5 rounded-lg border border-slate-100">
+          <span class="font-medium text-slate-700">E-mail:</span> {{ target.email }}
         </div>
       </div>
+    </div>
 
-      <div class="mt-6 flex items-center justify-end gap-3">
-        <button
-          type="button"
-          (click)="closeDeleteModal()"
-          [disabled]="isDeleting"
-          class="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 focus:outline-none transition cursor-pointer disabled:opacity-50"
-        >
-          Cancelar
-        </button>
-        <button
-          type="button"
-          (click)="confirmDelete()"
-          [disabled]="isDeleting"
-          class="inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-xl focus:outline-none transition shadow-xs cursor-pointer disabled:opacity-50"
-        >
-          @if (isDeleting) {
-            <i class="bi bi-arrow-repeat animate-spin text-sm"></i>
-            <span>Excluindo...</span>
-          } @else {
-            <i class="bi bi-trash3 text-sm"></i>
-            <span>Excluir Usuário</span>
-          }
-        </button>
-      </div>
+    <div class="mt-6 flex items-center justify-end gap-3">
+      <button type="button" (click)="closeDeleteModal()" [disabled]="isDeleting"
+        class="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 focus:outline-none transition cursor-pointer disabled:opacity-50">
+        Cancelar
+      </button>
+      <button type="button" (click)="confirmDelete()" [disabled]="isDeleting"
+        class="inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-xl focus:outline-none transition shadow-xs cursor-pointer disabled:opacity-50">
+        @if (isDeleting) {
+        <i class="bi bi-arrow-repeat animate-spin text-sm"></i>
+        <span>Excluindo...</span>
+        } @else {
+        <i class="bi bi-trash3 text-sm"></i>
+        <span>Excluir Usuário</span>
+        }
+      </button>
     </div>
   </div>
+</div>
+}
+
+@if (userToEdit; as target) {
+<div
+  class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs transition-opacity animate-fade-in">
+  <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 transform transition-all">
+    <div class="flex items-start justify-between mb-4">
+      <h3 class="text-lg font-bold text-slate-900">Editar Usuário</h3>
+      <button type="button" (click)="closeEditModal()" class="text-slate-400 hover:text-slate-600 transition-colors">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+
+    <div class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-slate-700 mb-1">Nome</label>
+        <input type="text" [(ngModel)]="editForm.userName"
+          class="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all placeholder:text-slate-400"
+          placeholder="Nome do usuário" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-slate-700 mb-1">E-mail</label>
+        <input type="email" [(ngModel)]="editForm.email"
+          class="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all placeholder:text-slate-400"
+          placeholder="email@exemplo.com" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-slate-700 mb-1">Nova Senha (Opcional)</label>
+        <input type="password" [(ngModel)]="editForm.password"
+          class="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all placeholder:text-slate-400"
+          placeholder="Deixe em branco para manter a atual" />
+      </div>
+    </div>
+
+    <div class="mt-6 flex items-center justify-end gap-3">
+      <button type="button" (click)="closeEditModal()" [disabled]="isEditing"
+        class="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 focus:outline-none transition cursor-pointer disabled:opacity-50">
+        Cancelar
+      </button>
+      <button type="button" (click)="saveEdit()" [disabled]="isEditing || !editForm.userName || !editForm.email"
+        class="inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl focus:outline-none transition shadow-xs cursor-pointer disabled:opacity-50">
+        @if (isEditing) {
+        <i class="bi bi-arrow-repeat animate-spin text-sm"></i>
+        <span>Salvando...</span>
+        } @else {
+        <i class="bi bi-check-lg text-sm"></i>
+        <span>Salvar</span>
+        }
+      </button>
+    </div>
+  </div>
+</div>
 }

@@ -24,6 +24,9 @@ export class HomeComponent implements OnInit {
   public isMockMode: boolean = false;
   public userToDelete: UserGetModel | null = null;
   public isDeleting: boolean = false;
+  public userToEdit: UserGetModel | null = null;
+  public editForm = { userName: '', email: '', password: '' };
+  public isEditing: boolean = false;
   public errorMessage: string = '';
 
   public get filteredUsers(): UserGetModel[] {
@@ -111,6 +114,68 @@ export class HomeComponent implements OnInit {
     this.isMockMode = true;
     this.toastService.info('Dados mockados restaurados.');
     this.cdr.markForCheck();
+  }
+
+  public openEditModal(user: UserGetModel): void {
+    this.userToEdit = user;
+    this.editForm = {
+      userName: user.name,
+      email: user.email,
+      password: ''
+    };
+  }
+
+  public closeEditModal(): void {
+    if (!this.isEditing) {
+      this.userToEdit = null;
+    }
+  }
+
+  public saveEdit(): void {
+    if (!this.userToEdit) return;
+    
+    if (!this.editForm.userName || !this.editForm.email) {
+      this.toastService.error('Nome e E-mail são obrigatórios.');
+      return;
+    }
+
+    const userId = this.userToEdit.id;
+    const payload = {
+      userName: this.editForm.userName,
+      email: this.editForm.email,
+      password: this.editForm.password || undefined
+    };
+
+    this.isEditing = true;
+
+    this.userService.update(userId, payload).subscribe({
+      next: (response) => {
+        if (response && response.data) {
+          const index = this.users.findIndex(u => u.id === userId);
+          if (index !== -1) {
+            this.users[index] = response.data;
+          }
+        }
+        this.toastService.success(`Usuário "${payload.userName}" atualizado com sucesso!`);
+        this.isEditing = false;
+        this.userToEdit = null;
+        this.cdr.markForCheck();
+      },
+      error: (err) => {
+        if (this.isMockMode) {
+          const index = this.users.findIndex(u => u.id === userId);
+          if (index !== -1) {
+            this.users[index] = { ...this.users[index], name: payload.userName, email: payload.email };
+          }
+          this.toastService.success(`Usuário "${payload.userName}" atualizado com sucesso! (Modo Mock)`);
+          this.isEditing = false;
+          this.userToEdit = null;
+        } else {
+          this.isEditing = false;
+        }
+        this.cdr.markForCheck();
+      }
+    });
   }
 
   public getInitials(name: string): string {
