@@ -8,21 +8,21 @@
           <div class="row align-items-center">
             <div class="col">
               @if (isLoading) {
-                <div class="placeholder-glow">
-                  <h4 class="fw-bold placeholder col-4 bg-white bg-opacity-50 rounded"></h4>
-                  <p class="text-white-50 mb-0 placeholder col-5 bg-white bg-opacity-25 rounded"></p>
-                </div>
+              <div class="placeholder-glow">
+                <h4 class="fw-bold placeholder col-4 bg-white bg-opacity-50 rounded"></h4>
+                <p class="text-white-50 mb-0 placeholder col-5 bg-white bg-opacity-25 rounded"></p>
+              </div>
               } @else {
-                <h4 class="fw-bold mb-1">
-                  {{ greeting }}, {{ currentUser?.name ?? 'Usuário' }}! 👋
-                </h4>
-                <p class="text-white-50 mb-0 small">
-                  Você tem
-                  <strong class="text-white">{{ summary.pendingTasks }} tarefa(s)</strong>
-                  pendentes e
-                  <strong class="text-white">{{ summary.inProgressTasks }}</strong>
-                  em andamento.
-                </p>
+              <h4 class="fw-bold mb-1">
+                {{ greeting }}, {{ currentUser?.name ?? 'Usuário' }}!
+              </h4>
+              <p class="text-white-50 mb-0 small">
+                Você tem
+                <strong class="text-white">{{ summary.pendingTasks }} tarefa(s)</strong>
+                pendentes e
+                <strong class="text-white">{{ summary.inProgressTasks }}</strong>
+                em andamento.
+              </p>
               }
             </div>
             <div class="col-auto d-none d-md-block">
@@ -35,10 +35,10 @@
   </div>
 
   @if (isMockMode) {
-    <div class="alert alert-warning d-flex align-items-center gap-2 py-2 mb-4 rounded-3" role="alert">
-      <i class="bi bi-exclamation-triangle-fill"></i>
-      <span class="small">Exibindo dados de exemplo. A API pode estar indisponível.</span>
-    </div>
+  <div class="alert alert-warning d-flex align-items-center gap-2 py-2 mb-4 rounded-3" role="alert">
+    <i class="bi bi-exclamation-triangle-fill"></i>
+    <span class="small">Exibindo dados de exemplo. A API pode estar indisponível.</span>
+  </div>
   }
 
   <!-- Cards de Estatísticas -->
@@ -47,13 +47,13 @@
       <div class="card border-0 shadow-sm h-100 rounded-4">
         <div class="card-body text-center py-4">
           @if (isLoading) {
-            <div class="placeholder-glow">
-              <h2 class="fw-bold text-primary placeholder col-4 mb-2"></h2>
-              <p class="text-muted small mb-0 placeholder col-6"></p>
-            </div>
+          <div class="placeholder-glow">
+            <h2 class="fw-bold text-primary placeholder col-4 mb-2"></h2>
+            <p class="text-muted small mb-0 placeholder col-6"></p>
+          </div>
           } @else {
-            <h2 class="fw-bold text-primary mb-1">{{ summary.totalTasks }}</h2>
-            <p class="text-muted small mb-0">Total de Tarefas</p>
+          <h2 class="fw-bold text-primary mb-1">{{ summary.totalTasks }}</h2>
+          <p class="text-muted small mb-0">Total de Tarefas</p>
           }
           <div class="mt-2">
             <i class="bi bi-list-task text-primary fs-4 opacity-50"></i>
@@ -65,13 +65,13 @@
       <div class="card border-0 shadow-sm h-100 rounded-4">
         <div class="card-body text-center py-4">
           @if (isLoading) {
-            <div class="placeholder-glow">
-              <h2 class="fw-bold text-warning placeholder col-4 mb-2"></h2>
-              <p class="text-muted small mb-0 placeholder col-6"></p>
-            </div>
+          <div class="placeholder-glow">
+            <h2 class="fw-bold text-warning placeholder col-4 mb-2"></h2>
+            <p class="text-muted small mb-0 placeholder col-6"></p>
+          </div>
           } @else {
-            <h2 class="fw-bold text-warning mb-1">{{ summary.pendingTasks }}</h2>
-            <p class="text-muted small mb-0">Pendentes</p>
+          <h2 class="fw-bold text-warning mb-1">{{ summary.pendingTasks }}</h2>
+          <p class="text-muted small mb-0">Pendentes</p>
           }
           <div class="mt-2">
             <i class="bi bi-clock text-warning fs-4 opacity-50"></i>
@@ -83,13 +83,13 @@
       <div class="card border-0 shadow-sm h-100 rounded-4">
         <div class="card-body text-center py-4">
           @if (isLoading) {
-            <div class="placeholder-glow">
-              <h2 class="fw-bold text-info placeholder col-4 mb-2"></h2>
-              <p class="text-muted small mb-0 placeholder col-6"></p>
-            </div>
+          <div class="placeholder-glow">
+            <h2 class="fw-bold text-info placeholder col-4 mb-2"></h2>
+            <p class="text-muted small mb-0 placeholder col-6"></p>
+          </div>
           } @else {
-            <h2 class="fw-bold text-info mb-1">{{ summary.inProgressTasks }}</h2>
-            <p class="text-muted small mb-0">Em Andamento</p>
+          <h2 class="fw-bold text-info mb-1">{{ summary.inProgressTasks }}</h2>
+          <p class="text-muted small mb-0">Em Andamento</p>
           }
           <div class="mt-2">
             <i class="bi bi-arrow-repeat text-info fs-4 opacity-50"></i>
@@ -101,13 +101,13 @@
       <div class="card border-0 shadow-sm h-100 rounded-4">
         <div class="card-body text-center py-4">
           @if (isLoading) {
-            <div class="placeholder-glow">
-              <h2 class="fw-bold text-success placeholder col-4 mb-2"></h2>
-              <p class="text-muted small mb-0 placeholder col-6"></p>
-            </div>
+          <div class="placeholder-glow">
+            <h2 class="fw-bold text-success placeholder col-4 mb-2"></h2>
+            <p class="text-muted small mb-0 placeholder col-6"></p>
+          </div>
           } @else {
-            <h2 class="fw-bold text-success mb-1">{{ summary.completedTasks }}</h2>
-            <p class="text-muted small mb-0">Concluídas</p>
+          <h2 class="fw-bold text-success mb-1">{{ summary.completedTasks }}</h2>
+          <p class="text-muted small mb-0">Concluídas</p>
           }
           <div class="mt-2">
             <i class="bi bi-check-circle text-success fs-4 opacity-50"></i>
@@ -134,50 +134,50 @@
         </div>
         <div class="card-body px-4 py-3">
           @if (isLoading) {
-            <div class="placeholder-glow d-flex flex-column gap-3">
-              @for (i of [1,2,3]; track i) {
-                <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
-                  <div class="d-flex flex-column gap-1" style="width: 60%">
-                    <span class="placeholder col-7 rounded"></span>
-                    <span class="placeholder col-4 rounded" style="height: 10px"></span>
-                  </div>
-                  <span class="placeholder col-2 rounded-pill"></span>
-                </div>
-              }
+          <div class="placeholder-glow d-flex flex-column gap-3">
+            @for (i of [1,2,3]; track i) {
+            <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+              <div class="d-flex flex-column gap-1" style="width: 60%">
+                <span class="placeholder col-7 rounded"></span>
+                <span class="placeholder col-4 rounded" style="height: 10px"></span>
+              </div>
+              <span class="placeholder col-2 rounded-pill"></span>
             </div>
+            }
+          </div>
           } @else if (summary.recentTasks.length === 0) {
-            <div class="text-center py-5 text-muted">
-              <i class="bi bi-inbox fs-1 d-block mb-3 opacity-25"></i>
-              <p class="mb-3">Nenhuma tarefa encontrada.</p>
-              <a routerLink="/tasks/new" class="btn btn-primary btn-sm rounded-3">
-                <i class="bi bi-plus-circle me-1"></i> Criar primeira tarefa
-              </a>
-            </div>
+          <div class="text-center py-5 text-muted">
+            <i class="bi bi-inbox fs-1 d-block mb-3 opacity-25"></i>
+            <p class="mb-3">Nenhuma tarefa encontrada.</p>
+            <a routerLink="/tasks/new" class="btn btn-primary btn-sm rounded-3">
+              <i class="bi bi-plus-circle me-1"></i> Criar primeira tarefa
+            </a>
+          </div>
           } @else {
-            <div class="list-group list-group-flush">
-              @for (task of summary.recentTasks; track task.id) {
-                <div class="list-group-item list-group-item-action border-0 border-bottom px-0 py-3">
-                  <div class="d-flex align-items-start justify-content-between gap-2">
-                    <div class="flex-grow-1 min-w-0">
-                      <div class="fw-semibold text-dark text-truncate">{{ task.title }}</div>
-                      @if (task.description) {
-                        <div class="text-muted small text-truncate">{{ task.description }}</div>
-                      }
-                      @if (task.dueDate) {
-                        <div class="text-muted small mt-1">
-                          <i class="bi bi-calendar2 me-1"></i>
-                          Prazo: {{ task.dueDate | date:'dd/MM/yyyy' }}
-                        </div>
-                      }
-                    </div>
-                    <div class="d-flex flex-column align-items-end gap-1 flex-shrink-0">
-                      <span [class]="getStatusBadgeClass(task.status)">{{ task.status }}</span>
-                      <span [class]="getPriorityBadgeClass(task.priority)" class="fw-normal">{{ task.priority }}</span>
-                    </div>
+          <div class="list-group list-group-flush">
+            @for (task of summary.recentTasks; track task.id) {
+            <div class="list-group-item list-group-item-action border-0 border-bottom px-0 py-3">
+              <div class="d-flex align-items-start justify-content-between gap-2">
+                <div class="flex-grow-1 min-w-0">
+                  <div class="fw-semibold text-dark text-truncate">{{ task.title }}</div>
+                  @if (task.description) {
+                  <div class="text-muted small text-truncate">{{ task.description }}</div>
+                  }
+                  @if (task.dueDate) {
+                  <div class="text-muted small mt-1">
+                    <i class="bi bi-calendar2 me-1"></i>
+                    Prazo: {{ task.dueDate | date:'dd/MM/yyyy' }}
                   </div>
+                  }
                 </div>
-              }
+                <div class="d-flex flex-column align-items-end gap-1 flex-shrink-0">
+                  <span [class]="getStatusBadgeClass(task.status)">{{ task.status }}</span>
+                  <span [class]="getPriorityBadgeClass(task.priority)" class="fw-normal">{{ task.priority }}</span>
+                </div>
+              </div>
             </div>
+            }
+          </div>
           }
         </div>
       </div>
