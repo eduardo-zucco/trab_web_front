@@ -1,11 +1,11 @@
-<div class="min-h-screen flex flex-col bg-slate-100 text-slate-900 font-sans antialiased">
+<div class="d-flex flex-column min-vh-100 bg-light">
   <app-toast />
 
   @if (!isAuthRoute) {
     <app-navbar />
   }
 
-  <main class="flex-1">
+  <main class="flex-grow-1">
     <router-outlet />
   </main>
 
@@ -13,4 +13,3 @@
     <app-footer />
   }
 </div>
-

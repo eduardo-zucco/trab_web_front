@@ -1,0 +1,194 @@
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-9 col-xl-8">
+
+      <!-- Cabeçalho com avatar -->
+      <div class="card border-0 shadow-sm rounded-4 mb-4 overflow-hidden">
+        <div class="card-body p-0">
+          <div class="bg-primary p-4" style="min-height:80px;"></div>
+          <div class="px-4 pb-4 pt-0">
+            <div class="d-flex align-items-end gap-3" style="margin-top:-40px">
+              <div class="rounded-circle bg-white border border-4 border-white shadow d-flex align-items-center justify-content-center text-primary fw-bold"
+                style="width:80px;height:80px;font-size:1.75rem;flex-shrink:0">
+                {{ initials }}
+              </div>
+              <div class="mb-1">
+                <h4 class="fw-bold mb-0">{{ currentUser?.name ?? '...' }}</h4>
+                <p class="text-muted small mb-0">{{ currentUser?.email ?? '...' }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-4">
+
+        <!-- Formulário de Perfil -->
+        <div class="col-12 col-md-7">
+          <div class="card border-0 shadow-sm rounded-4 h-100">
+            <div class="card-header bg-white border-0 pt-4 px-4 pb-2">
+              <h5 class="fw-bold mb-0 d-flex align-items-center gap-2">
+                <i class="bi bi-person-fill text-primary"></i>
+                Dados Pessoais
+              </h5>
+              <p class="text-muted small mb-0">Atualize seu nome e e-mail</p>
+            </div>
+            <div class="card-body px-4 pb-4">
+              @if (isLoading) {
+                <div class="placeholder-glow d-flex flex-column gap-3">
+                  <div class="placeholder col-12 rounded" style="height:38px"></div>
+                  <div class="placeholder col-12 rounded" style="height:38px"></div>
+                  <div class="placeholder col-4 rounded" style="height:38px"></div>
+                </div>
+              } @else {
+                <form [formGroup]="profileForm" (ngSubmit)="saveProfile()" novalidate>
+
+                  <div class="mb-3">
+                    <label for="userName" class="form-label fw-medium small">
+                      Nome <span class="text-danger">*</span>
+                    </label>
+                    <div class="input-group">
+                      <span class="input-group-text bg-light text-muted">
+                        <i class="bi bi-person"></i>
+                      </span>
+                      <input
+                        type="text"
+                        id="userName"
+                        formControlName="userName"
+                        class="form-control"
+                        placeholder="Seu nome completo"
+                        [class.is-invalid]="profileForm.get('userName')?.touched && profileForm.get('userName')?.invalid"
+                      />
+                    </div>
+                    @if (profileForm.get('userName')?.touched && profileForm.get('userName')?.invalid) {
+                      <div class="text-danger small mt-1">
+                        @if (profileForm.get('userName')?.hasError('required')) { Nome obrigatório. }
+                        @else if (profileForm.get('userName')?.hasError('minlength')) { Mínimo 3 caracteres. }
+                      </div>
+                    }
+                  </div>
+
+                  <div class="mb-4">
+                    <label for="email" class="form-label fw-medium small">
+                      E-mail <span class="text-danger">*</span>
+                    </label>
+                    <div class="input-group">
+                      <span class="input-group-text bg-light text-muted">
+                        <i class="bi bi-envelope"></i>
+                      </span>
+                      <input
+                        type="email"
+                        id="email"
+                        formControlName="email"
+                        class="form-control"
+                        placeholder="seu@email.com"
+                        [class.is-invalid]="profileForm.get('email')?.touched && profileForm.get('email')?.invalid"
+                      />
+                    </div>
+                    @if (profileForm.get('email')?.touched && profileForm.get('email')?.invalid) {
+                      <div class="text-danger small mt-1">
+                        @if (profileForm.get('email')?.hasError('required')) { E-mail obrigatório. }
+                        @else if (profileForm.get('email')?.hasError('email')) { E-mail inválido. }
+                      </div>
+                    }
+                  </div>
+
+                  <button type="submit" [disabled]="isSaving"
+                    class="btn btn-primary rounded-3 d-flex align-items-center gap-2">
+                    @if (isSaving) {
+                      <span class="spinner-border spinner-border-sm" role="status"></span>
+                      <span>Salvando...</span>
+                    } @else {
+                      <i class="bi bi-check-circle-fill"></i>
+                      <span>Salvar Dados</span>
+                    }
+                  </button>
+
+                </form>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Alterar Senha -->
+        <div class="col-12 col-md-5">
+          <div class="card border-0 shadow-sm rounded-4 h-100">
+            <div class="card-header bg-white border-0 pt-4 px-4 pb-2">
+              <h5 class="fw-bold mb-0 d-flex align-items-center gap-2">
+                <i class="bi bi-shield-lock-fill text-warning"></i>
+                Alterar Senha
+              </h5>
+              <p class="text-muted small mb-0">Atualize sua senha de acesso</p>
+            </div>
+            <div class="card-body px-4 pb-4">
+              <form [formGroup]="passwordForm" (ngSubmit)="changePassword()" novalidate>
+
+                <div class="mb-3">
+                  <label for="newPassword" class="form-label fw-medium small">
+                    Nova Senha <span class="text-danger">*</span>
+                  </label>
+                  <div class="input-group">
+                    <input
+                      [type]="showNewPassword ? 'text' : 'password'"
+                      id="newPassword"
+                      formControlName="password"
+                      class="form-control"
+                      placeholder="••••••••"
+                      [class.is-invalid]="passwordForm.get('password')?.touched && passwordForm.get('password')?.invalid"
+                    />
+                    <button type="button" class="btn btn-outline-secondary"
+                      (click)="showNewPassword = !showNewPassword">
+                      <i class="bi" [class.bi-eye]="!showNewPassword" [class.bi-eye-slash]="showNewPassword"></i>
+                    </button>
+                  </div>
+                  @if (passwordForm.get('password')?.touched && passwordForm.get('password')?.invalid) {
+                    <div class="text-danger small mt-1">
+                      @if (passwordForm.get('password')?.hasError('required')) { Senha obrigatória. }
+                      @else if (passwordForm.get('password')?.hasError('minlength')) { Mínimo 6 caracteres. }
+                    </div>
+                  }
+                </div>
+
+                <div class="mb-4">
+                  <label for="confirmPassword" class="form-label fw-medium small">
+                    Confirmar Senha <span class="text-danger">*</span>
+                  </label>
+                  <div class="input-group">
+                    <input
+                      [type]="showConfirmPassword ? 'text' : 'password'"
+                      id="confirmPassword"
+                      formControlName="confirmPassword"
+                      class="form-control"
+                      placeholder="••••••••"
+                      [class.is-invalid]="passwordForm.get('confirmPassword')?.touched && passwordForm.get('confirmPassword')?.invalid"
+                    />
+                    <button type="button" class="btn btn-outline-secondary"
+                      (click)="showConfirmPassword = !showConfirmPassword">
+                      <i class="bi" [class.bi-eye]="!showConfirmPassword" [class.bi-eye-slash]="showConfirmPassword"></i>
+                    </button>
+                  </div>
+                  @if (passwordForm.get('confirmPassword')?.touched && passwordForm.get('confirmPassword')?.invalid) {
+                    <div class="text-danger small mt-1">Confirme a senha.</div>
+                  }
+                </div>
+
+                <button type="submit" [disabled]="isChangingPassword"
+                  class="btn btn-warning rounded-3 d-flex align-items-center gap-2 w-100">
+                  @if (isChangingPassword) {
+                    <span class="spinner-border spinner-border-sm" role="status"></span>
+                    <span>Alterando...</span>
+                  } @else {
+                    <i class="bi bi-key-fill"></i>
+                    <span>Alterar Senha</span>
+                  }
+                </button>
+
+              </form>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

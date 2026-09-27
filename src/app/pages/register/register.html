@@ -1,150 +1,161 @@
-<main class="bg-white md:h-screen">
-   <div class="grid md:grid-cols-2 items-center w-full h-full">
-      <div class="bg-gray-50 h-full max-md:order-1 p-4">
-         <img src="/images/signin-image.webp"
-            class="lg:max-w-3/4 w-full h-full aspect-square object-contain block mx-auto" alt="imagem de cadastro" />
+<div class="container py-5 min-vh-100 d-flex align-items-center justify-content-center">
+  <div class="card border-0 shadow-lg rounded-4 overflow-hidden w-100" style="max-width: 960px;">
+    <div class="row g-0">
+      <!-- Imagem Lateral -->
+      <div class="col-lg-5 d-none d-lg-flex bg-primary-subtle align-items-center justify-content-center p-4">
+        <div class="text-center px-2">
+          <i class="bi bi-person-plus-fill display-1 text-primary opacity-50"></i>
+          <h4 class="fw-bold text-primary mt-3">Crie sua conta</h4>
+          <p class="text-muted small">
+            Cadastre-se para acessar o sistema de gerenciamento de tarefas.
+          </p>
+          <div class="d-flex flex-column gap-2 mt-4 text-start">
+            <div class="d-flex align-items-center gap-2 text-muted small">
+              <i class="bi bi-check-circle-fill text-success"></i> Crie e organize suas tarefas
+            </div>
+            <div class="d-flex align-items-center gap-2 text-muted small">
+              <i class="bi bi-check-circle-fill text-success"></i> Acompanhe status e prioridades
+            </div>
+            <div class="d-flex align-items-center gap-2 text-muted small">
+              <i class="bi bi-check-circle-fill text-success"></i> Painel com visão geral
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="flex items-center px-4 py-12 w-full h-full md:px-8 lg:p-12">
-         <div class="max-w-md mx-auto w-full">
-            <div class="mb-10">
-               <h1 class="text-slate-900 text-2xl font-bold">
-                  Criar conta
-               </h1>
+      <!-- Formulário -->
+      <div class="col-lg-7 p-4 p-md-5 bg-white">
+        <div class="mb-4">
+          <h2 class="fw-bold text-dark mb-1">Criar conta</h2>
+          <p class="text-muted small">Preencha os campos abaixo para se cadastrar.</p>
+        </div>
+
+        <form [formGroup]="userForm" (ngSubmit)="submitForm()" novalidate>
+
+          <!-- Nome de Usuário -->
+          <div class="mb-3">
+            <label for="userName" class="form-label fw-medium small">
+              Nome de usuário <span class="text-danger">*</span>
+            </label>
+            <div class="input-group">
+              <span class="input-group-text bg-light text-muted"><i class="bi bi-person"></i></span>
+              <input
+                type="text"
+                id="userName"
+                formControlName="userName"
+                class="form-control"
+                placeholder="Ex: joaosilva"
+                [class.is-invalid]="userForm.get('userName')?.touched && userForm.get('userName')?.invalid"
+              />
             </div>
+            @if (userForm.get('userName')?.touched && userForm.get('userName')?.errors) {
+              <div class="text-danger small mt-1">
+                @if (userForm.get('userName')?.hasError('required')) { O nome é obrigatório. }
+                @else if (userForm.get('userName')?.hasError('minlength')) { Mínimo 3 caracteres. }
+              </div>
+            }
+          </div>
 
-            <form class="space-y-4 w-full" [formGroup]="userForm" (ngSubmit)="submitForm()">
-               <div>
-                  <label for="userName"
-                     class="mb-1.5 text-slate-900 font-medium text-sm inline-block">
-                     Nome de usuário
-                  </label>
-                  <input type="text" id="userName" name="userName"
-                     placeholder="Ex: teste"
-                     formControlName="userName"
-                     [class.outline-red-500]="userForm.get('userName')?.invalid && userForm.get('userName')?.touched"
-                     class="px-3 py-2.5 text-sm text-slate-900 rounded-md bg-white w-full outline-1 -outline-offset-1 outline-slate-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600" />
-                  @if (userForm.get('userName')?.touched && userForm.get('userName')?.errors) {
-                     <p class="text-xs text-red-600 mt-1">
-                        @if (userForm.get('userName')?.hasError('required')) {
-                           O nome de usuário é obrigatório.
-                        } @else if (userForm.get('userName')?.hasError('minlength')) {
-                           O nome de usuário deve ter no mínimo 3 caracteres.
-                        }
-                     </p>
-                  }
-               </div>
-
-               <div>
-                  <label for="email"
-                     class="mb-1.5 text-slate-900 font-medium text-sm inline-block">
-                     E-mail
-                  </label>
-                  <input type="email" id="email" name="email"
-                     placeholder="teste@exemplo.com"
-                     formControlName="email"
-                     [class.outline-red-500]="userForm.get('email')?.invalid && userForm.get('email')?.touched"
-                     class="px-3 py-2.5 text-sm text-slate-900 rounded-md bg-white w-full outline-1 -outline-offset-1 outline-slate-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600" />
-                  @if (userForm.get('email')?.touched && userForm.get('email')?.errors) {
-                     <p class="text-xs text-red-600 mt-1">
-                        @if (userForm.get('email')?.hasError('required')) {
-                           O e-mail é obrigatório.
-                        } @else if (userForm.get('email')?.hasError('email')) {
-                           Informe um e-mail válido.
-                        }
-                     </p>
-                  }
-               </div>
-
-               <div>
-                  <label for="password"
-                     class="mb-1.5 text-slate-900 font-medium text-sm inline-block">
-                     Senha
-                  </label>
-                  <div class="relative">
-                     <input [type]="showPassword ? 'text' : 'password'" id="password" name="password"
-                        placeholder="••••••••"
-                        formControlName="password"
-                        [class.outline-red-500]="userForm.get('password')?.invalid && userForm.get('password')?.touched"
-                        class="px-3 py-2.5 pr-10 text-sm text-slate-900 rounded-md bg-white w-full outline-1 -outline-offset-1 outline-slate-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600" />
-                     <button
-                        type="button"
-                        (click)="showPassword = !showPassword"
-                        class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer p-1"
-                        [attr.aria-label]="showPassword ? 'Ocultar senha' : 'Ver senha'">
-                        @if (showPassword) {
-                           <i class="bi bi-eye-slash text-lg leading-none"></i>
-                        } @else {
-                           <i class="bi bi-eye text-lg leading-none"></i>
-                        }
-                     </button>
-                  </div>
-                  @if (userForm.get('password')?.touched && userForm.get('password')?.errors) {
-                     <p class="text-xs text-red-600 mt-1">
-                        @if (userForm.get('password')?.hasError('required')) {
-                           A senha é obrigatória.
-                        } @else if (userForm.get('password')?.hasError('minlength')) {
-                           A senha deve ter no mínimo 6 caracteres.
-                        }
-                     </p>
-                  }
-               </div>
-
-               <div>
-                  <label for="confirm-password"
-                     class="mb-1.5 text-slate-900 font-medium text-sm inline-block">
-                     Confirmar senha
-                  </label>
-                  <div class="relative">
-                     <input [type]="showConfirmPassword ? 'text' : 'password'" id="confirm-password" name="confirmPassword"
-                        placeholder="••••••••"
-                        formControlName="confirmPassword"
-                        [class.outline-red-500]="userForm.get('confirmPassword')?.invalid && userForm.get('confirmPassword')?.touched"
-                        class="px-3 py-2.5 pr-10 text-sm text-slate-900 rounded-md bg-white w-full outline-1 -outline-offset-1 outline-slate-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600" />
-                     <button
-                        type="button"
-                        (click)="showConfirmPassword = !showConfirmPassword"
-                        class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer p-1"
-                        [attr.aria-label]="showConfirmPassword ? 'Ocultar confirmação de senha' : 'Ver confirmação de senha'">
-                        @if (showConfirmPassword) {
-                           <i class="bi bi-eye-slash text-lg leading-none"></i>
-                        } @else {
-                           <i class="bi bi-eye text-lg leading-none"></i>
-                        }
-                     </button>
-                  </div>
-                  @if (userForm.get('confirmPassword')?.touched && userForm.get('confirmPassword')?.errors) {
-                     <p class="text-xs text-red-600 mt-1">
-                        @if (userForm.get('confirmPassword')?.hasError('required')) {
-                           A confirmação de senha é obrigatória.
-                        } @else if (userForm.get('confirmPassword')?.hasError('passwordMismatch')) {
-                           As senhas não coincidem.
-                        }
-                     </p>
-                  }
-               </div>
-
-               <button type="submit"
-                  [disabled]="isLoading"
-                  class="w-full py-2.5 px-3.5 text-sm rounded-md font-semibold cursor-pointer tracking-wide text-white border border-blue-600 bg-blue-600 hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 flex items-center justify-center gap-2">
-                  @if (isLoading) {
-                     <i class="bi bi-arrow-repeat animate-spin text-base leading-none"></i>
-                     <span>Cadastrando...</span>
-                  } @else {
-                     <span>Criar conta</span>
-                  }
-               </button>
-            </form>
-
-            <div class="mt-6 text-slate-900 text-sm text-center">
-               Já possui uma conta?
-
-               <a routerLink="/login"
-                  class="text-blue-700 hover:underline ml-1 font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded">
-                  Entrar aqui
-               </a>
+          <!-- E-mail -->
+          <div class="mb-3">
+            <label for="email" class="form-label fw-medium small">
+              E-mail <span class="text-danger">*</span>
+            </label>
+            <div class="input-group">
+              <span class="input-group-text bg-light text-muted"><i class="bi bi-envelope"></i></span>
+              <input
+                type="email"
+                id="email"
+                formControlName="email"
+                class="form-control"
+                placeholder="seu@email.com"
+                [class.is-invalid]="userForm.get('email')?.touched && userForm.get('email')?.invalid"
+              />
             </div>
-         </div>
+            @if (userForm.get('email')?.touched && userForm.get('email')?.errors) {
+              <div class="text-danger small mt-1">
+                @if (userForm.get('email')?.hasError('required')) { E-mail obrigatório. }
+                @else if (userForm.get('email')?.hasError('email')) { E-mail inválido. }
+              </div>
+            }
+          </div>
+
+          <!-- Senha -->
+          <div class="mb-3">
+            <label for="password" class="form-label fw-medium small">
+              Senha <span class="text-danger">*</span>
+            </label>
+            <div class="input-group">
+              <span class="input-group-text bg-light text-muted"><i class="bi bi-key"></i></span>
+              <input
+                [type]="showPassword ? 'text' : 'password'"
+                id="password"
+                formControlName="password"
+                class="form-control"
+                placeholder="••••••••"
+                [class.is-invalid]="userForm.get('password')?.touched && userForm.get('password')?.invalid"
+              />
+              <button type="button" class="btn btn-outline-secondary"
+                (click)="showPassword = !showPassword">
+                <i class="bi" [class.bi-eye]="!showPassword" [class.bi-eye-slash]="showPassword"></i>
+              </button>
+            </div>
+            @if (userForm.get('password')?.touched && userForm.get('password')?.errors) {
+              <div class="text-danger small mt-1">
+                @if (userForm.get('password')?.hasError('required')) { Senha obrigatória. }
+                @else if (userForm.get('password')?.hasError('minlength')) { Mínimo 6 caracteres. }
+              </div>
+            }
+          </div>
+
+          <!-- Confirmar Senha -->
+          <div class="mb-4">
+            <label for="confirmPassword" class="form-label fw-medium small">
+              Confirmar senha <span class="text-danger">*</span>
+            </label>
+            <div class="input-group">
+              <span class="input-group-text bg-light text-muted"><i class="bi bi-key-fill"></i></span>
+              <input
+                [type]="showConfirmPassword ? 'text' : 'password'"
+                id="confirmPassword"
+                formControlName="confirmPassword"
+                class="form-control"
+                placeholder="••••••••"
+                [class.is-invalid]="userForm.get('confirmPassword')?.touched && userForm.get('confirmPassword')?.invalid"
+              />
+              <button type="button" class="btn btn-outline-secondary"
+                (click)="showConfirmPassword = !showConfirmPassword">
+                <i class="bi" [class.bi-eye]="!showConfirmPassword" [class.bi-eye-slash]="showConfirmPassword"></i>
+              </button>
+            </div>
+            @if (userForm.get('confirmPassword')?.touched && userForm.get('confirmPassword')?.errors) {
+              <div class="text-danger small mt-1">
+                @if (userForm.get('confirmPassword')?.hasError('required')) { Confirmação obrigatória. }
+                @else if (userForm.get('confirmPassword')?.hasError('passwordMismatch')) { As senhas não coincidem. }
+              </div>
+            }
+          </div>
+
+          <!-- Botão -->
+          <button type="submit" [disabled]="isLoading"
+            class="btn btn-primary w-100 py-2 fw-semibold rounded-3 d-flex align-items-center justify-content-center gap-2 shadow-sm">
+            @if (isLoading) {
+              <span class="spinner-border spinner-border-sm" role="status"></span>
+              <span>Cadastrando...</span>
+            } @else {
+              <i class="bi bi-person-plus-fill"></i>
+              <span>Criar conta</span>
+            }
+          </button>
+
+          <div class="text-center mt-3 pt-2 border-top text-muted small">
+            Já possui uma conta?
+            <a routerLink="/login" class="text-primary fw-semibold text-decoration-none ms-1">
+              Entrar aqui
+            </a>
+          </div>
+        </form>
       </div>
-   </div>
-</main>
+    </div>
+  </div>
+</div>

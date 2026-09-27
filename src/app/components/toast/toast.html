@@ -1,50 +1,43 @@
-<div class="fixed top-5 right-5 z-[9999] flex flex-col gap-3 pointer-events-none max-w-sm w-full px-4 sm:px-0">
+<div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1090;">
   @for (toast of toastService.toasts(); track toast.id) {
     <div
-      class="pointer-events-auto shadow-lg transition-all duration-300 ease-out animate-slide-in text-sm p-4 rounded-md border flex items-center justify-between gap-3 w-full"
-      [class.bg-green-50]="toast.type === 'success'"
-      [class.border-green-200]="toast.type === 'success'"
-      [class.text-green-900]="toast.type === 'success'"
-
-      [class.bg-yellow-50]="toast.type === 'warning'"
-      [class.border-yellow-200]="toast.type === 'warning'"
-      [class.text-yellow-900]="toast.type === 'warning'"
-
-      [class.bg-red-50]="toast.type === 'error'"
-      [class.border-red-200]="toast.type === 'error'"
-      [class.text-red-900]="toast.type === 'error'"
-
-      [class.bg-blue-50]="toast.type === 'info'"
-      [class.border-blue-200]="toast.type === 'info'"
-      [class.text-blue-900]="toast.type === 'info'"
+      class="toast show align-items-center border-0 shadow-sm toast-animate mb-2"
+      [class.text-bg-success]="toast.type === 'success'"
+      [class.text-bg-warning]="toast.type === 'warning'"
+      [class.text-bg-danger]="toast.type === 'error'"
+      [class.text-bg-info]="toast.type === 'info'"
       role="alert"
+      aria-live="assertive"
+      aria-atomic="true"
     >
-      <div class="flex items-center gap-2.5 font-medium flex-1 min-w-0">
-        @switch (toast.type) {
-          @case ('success') {
-            <i class="bi bi-check-circle-fill text-lg shrink-0" aria-hidden="true"></i>
+      <div class="d-flex">
+        <div class="toast-body d-flex align-items-center gap-2">
+          @switch (toast.type) {
+            @case ('success') {
+              <i class="bi bi-check-circle-fill fs-5" aria-hidden="true"></i>
+            }
+            @case ('warning') {
+              <i class="bi bi-exclamation-triangle-fill fs-5 text-dark" aria-hidden="true"></i>
+            }
+            @case ('error') {
+              <i class="bi bi-x-circle-fill fs-5" aria-hidden="true"></i>
+            }
+            @case ('info') {
+              <i class="bi bi-info-circle-fill fs-5" aria-hidden="true"></i>
+            }
           }
-          @case ('warning') {
-            <i class="bi bi-exclamation-triangle-fill text-lg shrink-0" aria-hidden="true"></i>
-          }
-          @case ('error') {
-            <i class="bi bi-x-circle-fill text-lg shrink-0" aria-hidden="true"></i>
-          }
-          @case ('info') {
-            <i class="bi bi-info-circle-fill text-lg shrink-0" aria-hidden="true"></i>
-          }
-        }
-        <p class="truncate-2-lines text-xs sm:text-sm font-medium leading-tight">{{ toast.message }}</p>
+          <div class="fw-medium text-break" [class.text-dark]="toast.type === 'warning'">
+            {{ toast.message }}
+          </div>
+        </div>
+        <button
+          type="button"
+          (click)="toastService.remove(toast.id)"
+          class="btn-close me-2 m-auto"
+          [class.btn-close-white]="toast.type !== 'warning'"
+          aria-label="Fechar notificação"
+        ></button>
       </div>
-
-      <button
-        type="button"
-        (click)="toastService.remove(toast.id)"
-        class="opacity-60 hover:opacity-100 transition-opacity p-1 rounded hover:bg-black/5 cursor-pointer shrink-0"
-        aria-label="Fechar notificação"
-      >
-        <i class="bi bi-x-lg text-sm block" aria-hidden="true"></i>
-      </button>
     </div>
   }
 </div>

@@ -15,6 +15,14 @@ export class UserService {
     return this.apiService.get<UserGetModel[]>('users');
   }
 
+  public getMe(): Observable<ApiResponse<UserGetModel>> {
+    return this.apiService.get<UserGetModel>('users/me');
+  }
+
+  public updateMe(data: UpdateUserModel): Observable<ApiResponse<UserGetModel>> {
+    return this.apiService.put<UserGetModel>('users', 'me', data);
+  }
+
   public getById(id: number): Observable<ApiResponse<UserGetModel>> {
     return this.apiService.getById<UserGetModel>('users', id);
   }

@@ -24,6 +24,7 @@ export class AuthService {
           if (response.data?.token) {
             this.token = response.data.token;
             this.saveToken(this.token);
+            this.saveCurrentUser(response.data);
           }
           this.toastService.success(response.message || 'Conta criada com sucesso!');
         },
@@ -41,6 +42,7 @@ export class AuthService {
           if (response.data?.token) {
             this.token = response.data.token;
             this.saveToken(this.token, remember);
+            this.saveCurrentUser(response.data, remember);
           }
           this.toastService.success(response.message || 'Logado com sucesso!');
         },
@@ -60,6 +62,38 @@ export class AuthService {
     sessionStorage.setItem('token', token);
   }
 
+  saveCurrentUser(user: UserResponse, remember?: boolean): void {
+    const data = JSON.stringify(user);
+    if (remember) {
+      localStorage.setItem('currentUser', data);
+    } else {
+      localStorage.removeItem('currentUser');
+    }
+    sessionStorage.setItem('currentUser', data);
+  }
+
+  getCurrentUser(): UserResponse | null {
+    const raw = sessionStorage.getItem('currentUser') || localStorage.getItem('currentUser');
+    if (!raw) return null;
+    try {
+      return JSON.parse(raw);
+    } catch {
+      return null;
+    }
+  }
+
+  updateCurrentUser(user: Partial<UserResponse>): void {
+    const current = this.getCurrentUser();
+    if (current) {
+      const updated = { ...current, ...user };
+      const raw = JSON.stringify(updated);
+      if (localStorage.getItem('currentUser')) {
+        localStorage.setItem('currentUser', raw);
+      }
+      sessionStorage.setItem('currentUser', raw);
+    }
+  }
+
   getToken(): string | null {
     const token = sessionStorage.getItem('token') || localStorage.getItem('token');
     this.token = token;
@@ -73,6 +107,8 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem('token');
     sessionStorage.removeItem('token');
+    localStorage.removeItem('currentUser');
+    sessionStorage.removeItem('currentUser');
     this.token = null;
     this.toastService.info('Sessão encerrada.');
     this.router.navigate(['/login']);

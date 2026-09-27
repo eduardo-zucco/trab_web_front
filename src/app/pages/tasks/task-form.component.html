@@ -1,0 +1,145 @@
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-8 col-xl-7">
+
+      <!-- Breadcrumb -->
+      <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb small">
+          <li class="breadcrumb-item"><a routerLink="/" class="text-decoration-none">Painel</a></li>
+          <li class="breadcrumb-item"><a routerLink="/tasks" class="text-decoration-none">Tarefas</a></li>
+          <li class="breadcrumb-item active">{{ editMode ? 'Editar Tarefa' : 'Nova Tarefa' }}</li>
+        </ol>
+      </nav>
+
+      <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-header bg-white border-0 pt-4 px-4 pb-0">
+          <div class="d-flex align-items-center gap-3 mb-1">
+            <div class="bg-primary-subtle text-primary rounded-3 p-2 d-flex align-items-center justify-content-center">
+              <i class="bi" [class.bi-plus-circle-fill]="!editMode" [class.bi-pencil-fill]="editMode" style="font-size: 1.25rem;"></i>
+            </div>
+            <div>
+              <h4 class="fw-bold mb-0">{{ editMode ? 'Editar Tarefa' : 'Nova Tarefa' }}</h4>
+              <p class="text-muted small mb-0">{{ editMode ? 'Atualize os dados da tarefa' : 'Preencha os campos para criar uma nova tarefa' }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body p-4">
+
+          @if (isLoading) {
+            <div class="text-center py-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Carregando...</span>
+              </div>
+              <p class="text-muted small mt-2">Carregando dados da tarefa...</p>
+            </div>
+          } @else {
+            <form [formGroup]="taskForm" (ngSubmit)="submitForm()" novalidate>
+
+              <!-- Título -->
+              <div class="mb-3">
+                <label for="title" class="form-label fw-medium">
+                  Título <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="title"
+                  formControlName="title"
+                  class="form-control"
+                  placeholder="Ex: Implementar tela de login"
+                  [class.is-invalid]="taskForm.get('title')?.touched && taskForm.get('title')?.invalid"
+                />
+                @if (taskForm.get('title')?.touched && taskForm.get('title')?.invalid) {
+                  <div class="invalid-feedback">
+                    @if (taskForm.get('title')?.hasError('required')) { O título é obrigatório. }
+                    @else if (taskForm.get('title')?.hasError('minlength')) { Mínimo 2 caracteres. }
+                    @else if (taskForm.get('title')?.hasError('maxlength')) { Máximo 200 caracteres. }
+                  </div>
+                }
+                <div class="form-text text-end text-muted" style="font-size:.75rem">
+                  {{ taskForm.get('title')?.value?.length ?? 0 }}/200
+                </div>
+              </div>
+
+              <!-- Descrição -->
+              <div class="mb-3">
+                <label for="description" class="form-label fw-medium">Descrição</label>
+                <textarea
+                  id="description"
+                  formControlName="description"
+                  class="form-control"
+                  rows="4"
+                  placeholder="Descreva os detalhes da tarefa (opcional)"
+                  [class.is-invalid]="taskForm.get('description')?.touched && taskForm.get('description')?.invalid"
+                ></textarea>
+                @if (taskForm.get('description')?.touched && taskForm.get('description')?.invalid) {
+                  <div class="invalid-feedback">Máximo 2000 caracteres.</div>
+                }
+              </div>
+
+              <!-- Status e Prioridade lado a lado -->
+              <div class="row g-3 mb-3">
+                <div class="col-sm-6">
+                  <label for="status" class="form-label fw-medium">
+                    Status <span class="text-danger">*</span>
+                  </label>
+                  <select id="status" formControlName="status" class="form-select">
+                    @for (s of statusOptions; track s) {
+                      <option [value]="s">{{ s }}</option>
+                    }
+                  </select>
+                </div>
+                <div class="col-sm-6">
+                  <label for="priority" class="form-label fw-medium">
+                    Prioridade <span class="text-danger">*</span>
+                  </label>
+                  <select id="priority" formControlName="priority" class="form-select">
+                    @for (p of priorityOptions; track p) {
+                      <option [value]="p">{{ p }}</option>
+                    }
+                  </select>
+                </div>
+              </div>
+
+              <!-- Data de Prazo -->
+              <div class="mb-4">
+                <label for="dueDate" class="form-label fw-medium">
+                  <i class="bi bi-calendar2-event me-1"></i>Data de Prazo
+                </label>
+                <input
+                  type="date"
+                  id="dueDate"
+                  formControlName="dueDate"
+                  class="form-control"
+                />
+                <div class="form-text text-muted">Opcional. Defina quando a tarefa deve ser concluída.</div>
+              </div>
+
+              <!-- Botões -->
+              <div class="d-flex gap-2 pt-2 border-top">
+                <button
+                  type="submit"
+                  [disabled]="isSubmitting"
+                  class="btn btn-primary rounded-3 d-flex align-items-center gap-2 shadow-sm">
+                  @if (isSubmitting) {
+                    <span class="spinner-border spinner-border-sm" role="status"></span>
+                    <span>{{ editMode ? 'Salvando...' : 'Criando...' }}</span>
+                  } @else {
+                    <i class="bi" [class.bi-check-circle-fill]="editMode" [class.bi-plus-circle-fill]="!editMode"></i>
+                    <span>{{ editMode ? 'Salvar Alterações' : 'Criar Tarefa' }}</span>
+                  }
+                </button>
+                <a routerLink="/tasks" class="btn btn-outline-secondary rounded-3">
+                  Cancelar
+                </a>
+              </div>
+
+            </form>
+          }
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
